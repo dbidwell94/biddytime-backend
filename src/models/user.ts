@@ -1,5 +1,11 @@
-import { IUser } from "knex/types/tables";
-import Auditable from "./auditable";
+import Auditable from "@models/auditable";
+import { IUser } from "@services/UserServices";
+
+export interface IUserCreate {
+  firstName: string;
+  lastName: string;
+  password: string;
+}
 
 export default class User extends Auditable {
   firstName: string;

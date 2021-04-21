@@ -34,3 +34,4 @@ services:
       - "7002:1437"
     depends_on: 
       - database
+    restart: always
