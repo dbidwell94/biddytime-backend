@@ -5,7 +5,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "format": "prettier . --write && git add .",
-    "build": "webpack --progress",
+    "build": "webpack --progress && tsc ./migrations/*.ts",
     "dev": "knex migrate:up && nodemon src/index.ts",
     "up": "sudo docker-compose -f ./docker-compose-dev.yaml up --build",
     "up:d": "sudo docker-compose -f ./docker-compose-dev.yaml up --build -d",
