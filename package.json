@@ -15,7 +15,8 @@
     "arrowParens": "always",
     "bracketSpacing": true,
     "printWidth": 120,
-    "quoteProps": "consistent"
+    "quoteProps": "consistent",
+    "singleQuote": false
   },
   "dependencies": {
     "dotenv": "^8.2.0",
