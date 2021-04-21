@@ -1,6 +1,6 @@
 import * as knex from "knex";
 
-const config: Record<string, knex.Knex.Config> = {
+const config: Record<"development" | "production", knex.Knex.Config> = {
   development: {
     client: "pg",
     connection: {

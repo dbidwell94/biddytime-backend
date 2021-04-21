@@ -1,2 +1,4 @@
 import knexfile from "../knexfile";
-import * as Knex from "knex";
+import Knex from "knex";
+
+export default Knex(process.env.NODE_ENV === "production" ? knexfile.production : knexfile.development);
