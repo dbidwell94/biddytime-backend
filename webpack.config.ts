@@ -1,11 +1,14 @@
 import { Configuration } from "webpack";
 import path from "path";
 import PathsPlugin from "tsconfig-paths-webpack-plugin";
+import externals from "webpack-node-externals";
 
 export default function config(env: { WEBPACK_BUNDLE: boolean; WEBPACK_BUILD: boolean }, args: any): Configuration {
   return {
     mode: process.env.NODE_ENV === "development" ? "development" : "production",
-    entry: path.join(__dirname, "src", "index.ts"),
+    entry: { main: path.join(__dirname, "src", "index.ts"), knexfile: path.join(__dirname, "knexfile.ts") },
+    target: "node",
+    externals: [externals()],
     stats: {
       errorDetails: true,
     },
@@ -18,7 +21,7 @@ export default function config(env: { WEBPACK_BUNDLE: boolean; WEBPACK_BUILD: bo
       ],
     },
     resolve: {
-      plugins: [new PathsPlugin({ logLevel: "INFO" })],
+      plugins: [new PathsPlugin()],
       extensions: [".ts", ".js", ".json"],
     },
   };

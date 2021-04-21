@@ -1,8 +1,9 @@
-require("module-alias/register");
+if (process.env.NODE_ENV === "production") {
+  require("module-alias/register");
+}
 
 import httpStatus from "http-status";
 import Koa from "koa";
-import Router from "koa-router";
 import routes from "@routes/router";
 
 require("dotenv").config();
