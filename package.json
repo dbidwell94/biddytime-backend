@@ -6,10 +6,11 @@
   "scripts": {
     "format": "prettier . --write && git add .",
     "build": "webpack",
-    "dev": "nodemon src/index.ts",
+    "dev": "knex migrate:up && nodemon src/index.ts",
     "up": "sudo docker-compose -f ./docker-compose-dev.yaml up --build",
     "up:d": "sudo docker-compose -f ./docker-compose-dev.yaml up --build -d",
-    "down": "docker-compose -f ./docker-compose-dev.yaml down --remove-orphans"
+    "down": "docker-compose -f ./docker-compose-dev.yaml down --remove-orphans",
+    "knex": "knex"
   },
   "prettier": {
     "arrowParens": "always",
