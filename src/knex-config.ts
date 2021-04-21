@@ -1,7 +1,8 @@
-import knexfile from "../knexfile";
+// @ts-ignore
+import config from "../knexfile";
 import Knex from "knex";
 
-const connection = Knex(process.env.NODE_ENV === "production" ? knexfile.production : knexfile.development);
+const connection = Knex(process.env.NODE_ENV === "production" ? config.production : config.development);
 
 export type IKnexConnection = typeof connection;
 

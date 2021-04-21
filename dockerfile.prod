@@ -5,7 +5,8 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 COPY dist/main.js /usr/src/app/
 COPY yarn.lock /usr/src/app/
-COPY 
+COPY knexfile.js /usr/src/app/
+COPY ./migrations /usr/src/app/migrations
 
 RUN yarn install --production
 

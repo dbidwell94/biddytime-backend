@@ -1,8 +1,4 @@
-// @ts-ignore
-import * as knex from "knex";
-
-// @ts-ignore
-const config: Record<"development" | "production", knex.Knex.Config> = {
+const config = {
   development: {
     client: "postgresql",
     connection: {
@@ -21,7 +17,7 @@ const config: Record<"development" | "production", knex.Knex.Config> = {
       host: "database",
       user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
+      database: process.env.POSTGRES_DB,
     },
     migrations: {
       tableName: "migrations",
@@ -29,4 +25,4 @@ const config: Record<"development" | "production", knex.Knex.Config> = {
   },
 };
 
-export default config;
+module.exports = config;

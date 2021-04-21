@@ -9,6 +9,7 @@
     "dev": "knex migrate:up && nodemon src/index.ts",
     "up": "sudo docker-compose -f ./docker-compose-dev.yaml up --build",
     "up:d": "sudo docker-compose -f ./docker-compose-dev.yaml up --build -d",
+    "up:prod": "yarn build && sudo docker-compose up --build",
     "down": "docker-compose -f ./docker-compose-dev.yaml down --remove-orphans",
     "prod:start": "knex migrate:up && node ./main.js"
   },

@@ -6,7 +6,7 @@ import externals from "webpack-node-externals";
 export default function config(env: { WEBPACK_BUNDLE: boolean; WEBPACK_BUILD: boolean }, args: any): Configuration {
   return {
     mode: process.env.NODE_ENV === "development" ? "development" : "production",
-    entry: { main: path.join(__dirname, "src", "index.ts"), knexfile: path.join(__dirname, "knexfile.ts") },
+    entry: { main: path.join(__dirname, "src", "index.ts") },
     target: "node",
     externals: [externals()],
     stats: {
