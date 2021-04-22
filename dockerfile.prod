@@ -3,11 +3,11 @@ FROM node:15
 WORKDIR /usr/src/app
 
 COPY package.json /usr/src/app/
-COPY dist/main.js /usr/src/app/
+COPY dist/index.js /usr/src/app/
 COPY yarn.lock /usr/src/app/
-COPY knexfile.js /usr/src/app/
-COPY ./migrations /usr/src/app/migrations
+COPY knexfile.ts /usr/src/app/
+COPY ./dist/migrations /usr/src/app/migrations
 
 RUN yarn install --production
 
-CMD ["yarn", "prod:start"]
+CMD ["node", "index.js"]

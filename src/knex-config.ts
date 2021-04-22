@@ -1,4 +1,3 @@
-// @ts-ignore
 import config from "../knexfile";
 import Knex from "knex";
 

@@ -10,10 +10,9 @@
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@models/*": ["models/*"],
-      "@services/*": ["services/*"],
       "@routes/*": ["routes/*"],
-      "@src/*": ["*"]
+      "@models/*": ["models/*"],
+      "@services/*": ["services/*"]
     }
   }
 }

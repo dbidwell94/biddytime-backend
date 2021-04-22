@@ -1,40 +1,27 @@
-import httpStatus, { HttpStatus } from "http-status";
+import UserService from "@services/userServices";
+import httpStatus from "http-status";
 import Router from "koa-router";
-import { ServerError } from "@src/helpers";
-import UserServices from "@services/UserServices";
+import { ServerError } from "helpers";
 
 class UserRouterError extends ServerError {
-  status: number;
-  constructor(message: string, status?: number) {
+  constructor(message: string) {
     super(message);
-    this.status = status || httpStatus.INTERNAL_SERVER_ERROR;
   }
 }
 
-const router = new Router<{ userServices: UserServices }>();
-router.use(async (ctx, next) => {
-  ctx.state.userServices = new UserServices();
+const router = new Router<UserService>();
 
-  await next();
+router.use(async (ctx) => {
+  ctx.state = new UserService();
 });
 
-router.get("/user/:id", async (ctx, next) => {
-  const { id: paramId } = ctx.params;
+router.get("/user/:id", async (ctx) => {
+  const { id: paramsId } = ctx.params;
 
-  const id = Number(paramId);
+  const id = Number(paramsId);
+
   if (Number.isNaN(id) || id === 0) {
-    throw new UserRouterError("Specified id is invalid", httpStatus.BAD_REQUEST);
-  }
-
-  ctx.status = httpStatus.OK;
-  ctx.body = await ctx.state.userServices.getUserById(id);
-  await next();
-});
-
-router.post("/user", async (ctx, next) => {
-  const { firstName, lastName, password } = ctx.body;
-  if (!firstName || !lastName || !password) {
-    throw new UserRouterError("firstName, lastName, and password are required", httpStatus.BAD_REQUEST);
+    throw new UserRouterError("id parameter is invalid");
   }
 });
 

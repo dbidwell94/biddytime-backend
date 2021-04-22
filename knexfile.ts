@@ -1,4 +1,4 @@
-const config = {
+export default {
   development: {
     client: "postgresql",
     connection: {
@@ -24,5 +24,3 @@ const config = {
     },
   },
 };
-
-module.exports = config;
