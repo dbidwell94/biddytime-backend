@@ -1,5 +1,5 @@
 import { IAuditable } from "./auditable";
-import { IUser } from "./user";
+import { IUserMin } from "./user";
 
 export interface ICompany extends IAuditable {
   companyName: string;
@@ -8,5 +8,7 @@ export interface ICompany extends IAuditable {
 
 export interface ICompanyFull extends IAuditable {
   companyName: string;
-  adminUser: IUser;
+  adminUser: IUserMin;
 }
+
+export type ICompanyCreate = Omit<ICompany, "createdAt" | "updatedAt" | "id">;

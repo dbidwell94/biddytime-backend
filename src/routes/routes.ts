@@ -1,8 +1,8 @@
 import Router from "@koa/router";
-import httpStatus from "http-status";
 import userRouter from "./userRouter";
+import companyRouter from "./companyRouter";
 
-const routes: Record<string, Router<any, {}>> = { users: userRouter };
+const routes: Record<string, Router<any, {}>> = { users: userRouter, companies: companyRouter };
 const router = new Router();
 
 Object.keys(routes).forEach((route) => {

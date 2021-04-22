@@ -1,7 +1,7 @@
-import { ServerError } from "helpers";
+import { omit, ServerError } from "helpers";
 import connection from "knex-config";
 import { Knex } from "knex";
-import { IUser, IUserCreate } from "@models/user";
+import { IUser, IUserCreate, IUserMin } from "@models/user";
 import httpStatus from "http-status";
 import { hash } from "bcrypt";
 import Service from ".";
@@ -20,17 +20,17 @@ export default class UserService extends Service {
     super();
   }
 
-  async getUserById(id: number): Promise<IUser> {
+  async getUserById(id: number): Promise<IUserMin> {
     const users = await this.repository.table<IUser>("user").select("*").where({ id }).limit(1);
 
     if (users.length === 0) {
       throw new UserServicesError(`User with id ${id} not found`, httpStatus.NOT_FOUND);
     }
 
-    return users[0];
+    return omit(users[0], "password", "deactivated");
   }
 
-  async createUser(partialUser: IUserCreate): Promise<IUser> {
+  async createUser(partialUser: IUserCreate): Promise<IUserMin> {
     const hashedPassword = await hash(partialUser.password, 10);
 
     const userId = await this.repository.table<IUser>("user").insert(

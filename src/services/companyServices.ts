@@ -1,4 +1,4 @@
-import { ICompany, ICompanyFull } from "@models/company";
+import { ICompany, ICompanyCreate, ICompanyFull } from "@models/company";
 import { IUser } from "@models/user";
 import { ServerError } from "helpers";
 import httpStatus from "http-status";
@@ -24,11 +24,25 @@ export default class CompanyServices extends Service {
     const companies = await this.repository.table<ICompany>("company").select("*").where({ id }).limit(1);
 
     if (companies.length === 0) {
-      throw new CompanyServiceError(`Company with id ${id} not found`);
+      throw new CompanyServiceError(`Company with id ${id} not found`, httpStatus.NOT_FOUND);
     }
 
     const user = await this.userService.getUserById(companies[0].adminUser);
 
     return { ...companies[0], adminUser: user };
+  }
+
+  async createCompany(companyMin: ICompanyCreate): Promise<ICompanyFull> {
+    const id = await this.repository.table<ICompany>("company").insert(
+      {
+        adminUser: companyMin.adminUser,
+        companyName: companyMin.companyName,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      },
+      "id"
+    );
+
+    return await this.getCompanyById(id[0]);
   }
 }

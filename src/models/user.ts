@@ -12,3 +12,5 @@ export interface IUserCreate {
   lastName: string;
   password: string;
 }
+
+export type IUserMin = Omit<IUser, "password" | "deactivated">;
