@@ -13,6 +13,6 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: 15.x
-      - run: docker build -f ./dockerfile.prod
+      - run: docker build -f ./dockerfile.prod .
       - run: yarn install
       - run: yarn build
