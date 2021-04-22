@@ -15,5 +15,6 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: 15.x
+      - run: echo $POSTGRES_USER
       - run: yarn install
       - run: yarn build
