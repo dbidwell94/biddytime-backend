@@ -6,7 +6,7 @@ services:
     image: "postgres"
     restart: always
     env_file: 
-      - ./.prod.env
+      - ./prod.env
     volumes:
       - /home/serverdata-prod/:/var/lib/postgresql/data
 
@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: ./dockerfile.prod
     env_file: 
-      - ./.prod.env
+      - ./prod.env
     ports: 
       - "7002:1437"
     depends_on: 
