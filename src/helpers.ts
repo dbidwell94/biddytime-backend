@@ -9,7 +9,7 @@ export class ServerError extends Error {
 
 export function omit<T extends Object, K extends Extract<keyof T, string>>(obj: T, ...values: K[]): Omit<T, K> {
   values.forEach((key) => {
-    delete obj[key];
+    (obj[key] as any) = undefined;
   });
 
   return obj;
