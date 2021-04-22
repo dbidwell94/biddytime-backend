@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  build_and_push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,3 +16,11 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: docker build -f ./dockerfile.prod -t biddytime-backend:latest .
+      - name: Push to github packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.REPO_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: dbidwell94/biddytime-backend/biddytime-backend:latest
+          tag_with_ref: true
