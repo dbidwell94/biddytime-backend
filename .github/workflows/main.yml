@@ -16,5 +16,4 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: docker build -f ./dockerfile.prod -t biddytime-backend:latest .
-      - name: Push to github packages
       - run: echo ${{ secrets.REPO_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
