@@ -17,3 +17,5 @@ jobs:
       - run: yarn build
       - run: docker build -f ./dockerfile.prod -t biddytime-backend:latest .
       - run: echo ${{ secrets.REPO_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - run: docker tag biddytime-backend:latest ghcr.io/dbidwell94/biddytime-backend:latest
+      - run: docker push ghcr.io/dbidwell94/biddytime-backend:latest
