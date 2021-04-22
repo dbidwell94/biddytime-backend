@@ -2,17 +2,12 @@ import httpStatus from "http-status";
 import Koa from "koa";
 import routes from "@routes/routes";
 import logger from "koa-logger";
+import bodyParser from "koa-bodyparser";
 
 const koa = new Koa();
 
 koa.use(logger());
-
-koa.use(routes.middleware());
-koa.use(routes.allowedMethods());
-
-routes.stack.forEach((route) => {
-  console.log(`${route.methods} -- ${route.path}`);
-});
+koa.use(bodyParser());
 
 koa.use(async (ctx, next) => {
   try {
@@ -21,6 +16,10 @@ koa.use(async (ctx, next) => {
     ctx.body = { error: err.message, details: err.details };
     ctx.status = err.status || httpStatus.INTERNAL_SERVER_ERROR;
   }
+});
+
+routes.forEach((route) => {
+  koa.use(route);
 });
 
 koa.listen(1437, () => {

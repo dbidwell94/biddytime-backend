@@ -1,6 +1,6 @@
 import UserService from "@services/userServices";
 import httpStatus from "http-status";
-import Router from "koa-router";
+import Router from "@koa/router";
 import { ServerError } from "helpers";
 import { IUserCreate } from "@models/user";
 
@@ -15,8 +15,9 @@ class UserRouterError extends ServerError {
 
 const router = new Router<UserService>();
 
-router.use(async (ctx) => {
+router.use(async (ctx, next) => {
   ctx.state = new UserService();
+  await next();
 });
 
 router.get("/user/:id", async (ctx) => {
@@ -30,19 +31,19 @@ router.get("/user/:id", async (ctx) => {
 
   const user = await ctx.state.getUserById(id);
 
-  ctx.body = { user };
+  ctx.body = user;
   ctx.status = httpStatus.OK;
 });
 
 router.post("/user", async (ctx) => {
-  const { firstName, lastName, password } = ctx.body as IUserCreate;
+  const { firstName, lastName, password } = ctx.request.body as IUserCreate;
   if (!firstName || !lastName || !password) {
     throw new UserRouterError("firstName, lastName, and password are required", httpStatus.BAD_REQUEST);
   }
 
   const returnUser = await ctx.state.createUser({ firstName, lastName, password });
 
-  ctx.body = { user: returnUser };
+  ctx.body = returnUser;
   ctx.status = httpStatus.CREATED;
 });
 
