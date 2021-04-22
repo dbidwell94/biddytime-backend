@@ -53,8 +53,7 @@ export function validateBody(schema: Schema<Record<string, IModelSchema>>, args:
   Object.keys(schema).forEach((schemaKey) => {
     if (!(schemaKey in args) || !args[schemaKey]) {
       missingArgs[schemaKey] = schema[schemaKey];
-    }
-    else if (!validateType(args[schemaKey], schema[schemaKey].propertyType)) {
+    } else if (!validateType(args[schemaKey], schema[schemaKey].propertyType)) {
       missingArgs[schemaKey] = schema[schemaKey];
     }
   });

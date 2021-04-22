@@ -1,7 +1,7 @@
 export type IPropertyType = "string" | "boolean" | "number" | "date";
 
 export interface IModelSchema {
-  propertyType: IPropertyType
+  propertyType: IPropertyType;
   optional?: boolean;
 }
 

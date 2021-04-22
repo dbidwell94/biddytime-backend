@@ -17,7 +17,8 @@
     "up:d": "sudo docker-compose -f ./docker-compose-dev.yaml up --build -d",
     "up:prod": "yarn build && docker-compose up --build",
     "down": "docker-compose -f ./docker-compose-dev.yaml down --remove-orphans",
-    "prod:start": "knex migrate:up && node ./index.js"
+    "prod:start": "knex migrate:up && node ./index.js",
+    "postinstall": "husky install"
   },
   "prettier": {
     "arrowParens": "always",
