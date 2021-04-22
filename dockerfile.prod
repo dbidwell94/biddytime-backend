@@ -10,4 +10,4 @@ COPY ./dist/migrations /usr/src/app/migrations
 
 RUN yarn install --production
 
-CMD ["node", "index.js"]
+CMD ["yarn", "prod:start"]

@@ -25,7 +25,7 @@ export default class UserService {
     const users = await this.repository.table<IUser>("user").select("*").where({ id }).limit(1);
 
     if (users.length === 0) {
-      throw new UserServicesError(`User with id ${id} not found`);
+      throw new UserServicesError(`User with id ${id} not found`, httpStatus.NOT_FOUND);
     }
 
     return users[0];
