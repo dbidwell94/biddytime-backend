@@ -1,11 +1,16 @@
 import { ServerError } from "helpers";
 import connection from "knex-config";
 import { Knex } from "knex";
-import { IUser } from "@models/user";
+import { IUser, IUserCreate } from "@models/user";
+import httpStatus from "http-status";
+import { hash } from "bcrypt";
 
 export class UserServicesError extends ServerError {
-  constructor(message: string) {
+  readonly status: number;
+
+  constructor(message: string, status?: number) {
     super(message);
+    this.status = status || httpStatus.INTERNAL_SERVER_ERROR;
   }
 }
 
@@ -24,5 +29,23 @@ export default class UserService {
     }
 
     return users[0];
+  }
+
+  async createUser(partialUser: IUserCreate): Promise<IUser> {
+    const hashedPassword = await hash(partialUser.password, 10);
+
+    const userId = await this.repository.table<IUser>("user").insert(
+      {
+        createdAt: new Date(Date.now()),
+        deactivated: false,
+        firstName: partialUser.firstName,
+        lastName: partialUser.lastName,
+        updatedAt: new Date(Date.now()),
+        password: hashedPassword,
+      },
+      "id"
+    );
+
+    return await this.getUserById(userId[0]);
   }
 }

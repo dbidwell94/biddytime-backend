@@ -6,3 +6,9 @@ export interface IUser extends IAuditable {
   deactivated: boolean;
   password: string;
 }
+
+export interface IUserCreate {
+  firstName: string;
+  lastName: string;
+  password: string;
+}
