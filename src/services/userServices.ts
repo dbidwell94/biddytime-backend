@@ -4,6 +4,7 @@ import { Knex } from "knex";
 import { IUser, IUserCreate } from "@models/user";
 import httpStatus from "http-status";
 import { hash } from "bcrypt";
+import Service from ".";
 
 export class UserServicesError extends ServerError {
   readonly status: number;
@@ -14,11 +15,9 @@ export class UserServicesError extends ServerError {
   }
 }
 
-export default class UserService {
-  private repository: Knex<IUser>;
-
+export default class UserService extends Service {
   constructor() {
-    this.repository = connection;
+    super();
   }
 
   async getUserById(id: number): Promise<IUser> {

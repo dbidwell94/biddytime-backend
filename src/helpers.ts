@@ -6,3 +6,11 @@ export class ServerError extends Error {
     Object.setPrototypeOf(this, ServerError.prototype);
   }
 }
+
+export function omit<T extends Object, K extends Extract<keyof T, string>>(obj: T, ...values: K[]): Omit<T, K> {
+  values.forEach((key) => {
+    delete obj[key];
+  });
+
+  return obj;
+}

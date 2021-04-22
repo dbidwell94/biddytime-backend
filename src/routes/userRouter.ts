@@ -1,7 +1,7 @@
 import UserService from "@services/userServices";
 import httpStatus from "http-status";
 import Router from "@koa/router";
-import { ServerError } from "helpers";
+import { omit, ServerError } from "helpers";
 import { IUserCreate } from "@models/user";
 
 class UserRouterError extends ServerError {
@@ -31,7 +31,7 @@ router.get("/user/:id", async (ctx) => {
 
   const user = await ctx.state.getUserById(id);
 
-  ctx.body = user;
+  ctx.body = omit(user, "password", "deactivated");
   ctx.status = httpStatus.OK;
 });
 
@@ -43,7 +43,7 @@ router.post("/user", async (ctx) => {
 
   const returnUser = await ctx.state.createUser({ firstName, lastName, password });
 
-  ctx.body = returnUser;
+  ctx.body = omit(returnUser, "password", "deactivated");
   ctx.status = httpStatus.CREATED;
 });
 
