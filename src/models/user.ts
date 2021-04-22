@@ -1,3 +1,4 @@
+import { Schema } from ".";
 import { IAuditable } from "./auditable";
 
 export interface IUser extends IAuditable {
@@ -14,3 +15,15 @@ export interface IUserCreate {
 }
 
 export type IUserMin = Omit<IUser, "password" | "deactivated">;
+
+export const userPostSchema: Schema<IUserCreate> = {
+  firstName: {
+    propertyType: "string",
+  },
+  lastName: {
+    propertyType: "string",
+  },
+  password: {
+    propertyType: "string",
+  },
+};

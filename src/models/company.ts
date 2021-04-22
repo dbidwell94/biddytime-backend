@@ -1,3 +1,4 @@
+import { Schema } from ".";
 import { IAuditable } from "./auditable";
 import { IUserMin } from "./user";
 
@@ -12,3 +13,12 @@ export interface ICompanyFull extends IAuditable {
 }
 
 export type ICompanyCreate = Omit<ICompany, "createdAt" | "updatedAt" | "id">;
+
+export const companyPostSchema: Schema<ICompanyCreate> = {
+  adminUser: {
+    propertyType: "number",
+  },
+  companyName: {
+    propertyType: "string",
+  },
+};

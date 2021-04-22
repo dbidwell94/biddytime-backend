@@ -1,4 +1,5 @@
 import httpStatus from "http-status";
+import { IModelSchema, IPropertyType, Schema } from "./models";
 
 export class ServerError extends Error {
   details?: any;
@@ -11,8 +12,8 @@ export class ServerError extends Error {
 
 export class ParameterError extends ServerError {
   readonly status;
-  constructor(details: Record<string, string>) {
-    super("Your request is missing parameters", details);
+  constructor(details: Record<string, Object>) {
+    super("Your request parameters are invalid", details);
     this.status = httpStatus.BAD_REQUEST;
   }
 }
@@ -39,12 +40,22 @@ export function parseId(id: any, errorToThrow: new (message: string) => Error = 
   return toReturn;
 }
 
-export function validateBody(args: Record<string, any>): boolean {
-  const missingArgs: Record<string, string> = {};
+export function validateBody(schema: Schema<Record<string, IModelSchema>>, args: Record<string, any>): boolean {
+  function validateType(argument: any, type: IPropertyType): boolean {
+    if (typeof argument !== type) {
+      return false;
+    }
+    return true;
+  }
 
-  Object.keys(args).forEach((arg) => {
-    if (!args[arg]) {
-      missingArgs[arg] = "This field is required";
+  const missingArgs: Record<string, Object> = {};
+
+  Object.keys(schema).forEach((schemaKey) => {
+    if (!(schemaKey in args) || !args[schemaKey]) {
+      missingArgs[schemaKey] = schema[schemaKey];
+    }
+    else if (!validateType(args[schemaKey], schema[schemaKey].propertyType)) {
+      missingArgs[schemaKey] = schema[schemaKey];
     }
   });
 

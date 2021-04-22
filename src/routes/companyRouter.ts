@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import { ICompanyCreate } from "@models/company";
+import { companyPostSchema, ICompanyCreate } from "@models/company";
 import CompanyServices from "@services/companyServices";
 import { parseId, ServerError, validateBody } from "helpers";
 import httpStatus from "http-status";
@@ -31,7 +31,7 @@ router.get("/company/:id", async (ctx) => {
 
 router.post("/company", async (ctx) => {
   const { adminUser, companyName } = ctx.request.body as ICompanyCreate;
-  validateBody({ adminUser, companyName });
+  validateBody(companyPostSchema, { adminUser, companyName });
 
   const company = await ctx.state.createCompany({ adminUser, companyName });
 

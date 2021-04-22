@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "UNLICENSED",
+  "private": true,
+  "author": {
+    "email": "dbidwell94@gmail.com",
+    "name": "Devin Bidwell",
+    "url": "https://biddydev.com"
+  },
   "scripts": {
     "format": "prettier . --write && git add .",
-    "build": "webpack --progress",
+    "build": "webpack",
     "dev": "knex migrate:up && webpack --mode=development --watch",
     "up": "sudo docker-compose -f ./docker-compose-dev.yaml up --build",
     "up:d": "sudo docker-compose -f ./docker-compose-dev.yaml up --build -d",
-    "up:prod": "yarn build && sudo docker-compose up --build",
+    "up:prod": "yarn build && docker-compose up --build",
     "down": "docker-compose -f ./docker-compose-dev.yaml down --remove-orphans",
     "prod:start": "knex migrate:up && node ./index.js"
   },
@@ -26,6 +32,7 @@
     "bcrypt": "^5.0.1",
     "dotenv": "^8.2.0",
     "http-status": "^1.5.0",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.4",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
