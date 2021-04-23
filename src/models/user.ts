@@ -6,13 +6,19 @@ export interface IUser extends IAuditable {
   lastName: string;
   deactivated: boolean;
   password: string;
+  email: string;
+  username: string;
 }
 
 export interface IUserCreate {
   firstName: string;
   lastName: string;
   password: string;
+  email: string;
+  username: string;
 }
+
+export type IUserLogin = Pick<IUser, "password" | "username">;
 
 export type IUserMin = Omit<IUser, "password" | "deactivated">;
 
@@ -24,6 +30,21 @@ export const userPostSchema: Schema<IUserCreate> = {
     propertyType: "string",
   },
   password: {
+    propertyType: "string",
+  },
+  email: {
+    propertyType: "string",
+  },
+  username: {
+    propertyType: "string",
+  },
+};
+
+export const userLoginSchema: Schema<IUserLogin> = {
+  password: {
+    propertyType: "string",
+  },
+  username: {
     propertyType: "string",
   },
 };

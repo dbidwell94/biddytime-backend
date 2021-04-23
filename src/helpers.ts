@@ -40,7 +40,11 @@ export function parseId(id: any, errorToThrow: new (message: string) => Error = 
   return toReturn;
 }
 
-export function validateBody(schema: Schema<Record<string, IModelSchema>>, args: Record<string, any>): boolean {
+export function validateBody(
+  schema: Schema<Record<string, IModelSchema>>,
+  args: Record<string, any>,
+  shouldThrowError: boolean = true
+): boolean {
   function validateType(argument: any, type: IPropertyType): boolean {
     if (typeof argument !== type) {
       return false;
@@ -51,6 +55,10 @@ export function validateBody(schema: Schema<Record<string, IModelSchema>>, args:
   const missingArgs: Record<string, Object> = {};
 
   Object.keys(schema).forEach((schemaKey) => {
+    if (!schema[schemaKey].optional) {
+      schema[schemaKey].optional = false;
+    }
+
     if (!(schemaKey in args) || !args[schemaKey]) {
       missingArgs[schemaKey] = schema[schemaKey];
     } else if (!validateType(args[schemaKey], schema[schemaKey].propertyType)) {
@@ -60,5 +68,7 @@ export function validateBody(schema: Schema<Record<string, IModelSchema>>, args:
 
   if (Object.keys(missingArgs).length === 0) {
     return true;
+  } else if (!shouldThrowError) {
+    return false;
   } else throw new ParameterError(missingArgs);
 }

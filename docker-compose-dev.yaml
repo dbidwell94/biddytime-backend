@@ -28,6 +28,7 @@ services:
       dockerfile: ./dockerfile
     environment: 
       - NODE_ENV=development
+      - JWT_SECRET=keepitsecretkeepitsafe
     volumes: 
       - ./:/usr/src/app
     ports: 
