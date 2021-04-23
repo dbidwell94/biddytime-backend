@@ -29,6 +29,7 @@ services:
     environment: 
       - NODE_ENV=development
       - JWT_SECRET=keepitsecretkeepitsafe
+      - ADMIN_PASSWORD=password
     volumes: 
       - ./:/usr/src/app
     ports: 

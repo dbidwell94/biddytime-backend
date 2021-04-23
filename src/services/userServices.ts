@@ -84,16 +84,22 @@ export default class UserService extends Service {
     return jwt;
   }
 
+  /**
+   * Verify JWT signature and return a user from the database
+   * @param jwt The JSON Web Token passed from the Koa Context
+   * @returns The user assigned to the JWT
+   */
   async verifyJwt(jwt: string): Promise<IUserMin> {
-    const userInfo = verify(jwt, this.jwtSecret) as
-      | Omit<IUser, "createdAt" | "deactivated" | "password" | "updatedAt">
-      | undefined;
+    try {
+      const userInfo = verify(jwt, this.jwtSecret) as Omit<
+        IUser,
+        "createdAt" | "deactivated" | "password" | "updatedAt"
+      >;
 
-    if (!userInfo) {
+      return await this.getUserById(userInfo.id);
+    } catch (err) {
       throw new UserServicesError("Unable to verify JWT", httpStatus.UNAUTHORIZED);
     }
-
-    return await this.getUserById(userInfo.id);
   }
 
   async getAllUsers(): Promise<IUserMin[]> {

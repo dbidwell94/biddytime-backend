@@ -1,4 +1,4 @@
-export type IPropertyType = "string" | "boolean" | "number" | "date";
+export type IPropertyType = "string" | "boolean" | "number" | "date" | "array";
 
 export interface IModelSchema {
   propertyType: IPropertyType;

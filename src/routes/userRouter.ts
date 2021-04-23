@@ -4,7 +4,7 @@ import Router from "@koa/router";
 import { ServerError, validateBody } from "helpers";
 import { IUserCreate, userPostSchema, IUserLogin, userLoginSchema } from "@models/user";
 
-class UserRouterError extends ServerError {
+export class UserRouterError extends ServerError {
   readonly status: number;
 
   constructor(message: string, status?: number) {
@@ -18,28 +18,6 @@ const router = new Router<UserService>();
 router.use(async (ctx, next) => {
   ctx.state = new UserService();
   await next();
-});
-
-router.get("/users/all", async (ctx) => {
-  const users = await ctx.state.getAllUsers();
-
-  ctx.body = users;
-  ctx.status = httpStatus.OK;
-});
-
-router.get("/user/:id", async (ctx) => {
-  const { id: paramsId } = ctx.params;
-
-  const id = Number(paramsId);
-
-  if (Number.isNaN(id) || id === 0) {
-    throw new UserRouterError("id parameter is invalid");
-  }
-
-  const user = await ctx.state.getUserById(id);
-
-  ctx.body = user;
-  ctx.status = httpStatus.OK;
 });
 
 router.post("/register", async (ctx) => {

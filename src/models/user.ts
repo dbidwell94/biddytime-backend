@@ -8,6 +8,7 @@ export interface IUser extends IAuditable {
   password: string;
   email: string;
   username: string;
+  roles: number[];
 }
 
 export interface IUserCreate {
