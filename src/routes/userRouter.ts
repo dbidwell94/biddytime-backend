@@ -2,7 +2,7 @@ import UserService from "@services/userServices";
 import httpStatus from "http-status";
 import Router from "@koa/router";
 import { ServerError, validateBody } from "helpers";
-import { IUserCreate, userPostSchema } from "@models/user";
+import { IUserCreate, userPostSchema, IUserLogin, userLoginSchema } from "@models/user";
 
 class UserRouterError extends ServerError {
   readonly status: number;
@@ -35,15 +35,26 @@ router.get("/user/:id", async (ctx) => {
   ctx.status = httpStatus.OK;
 });
 
-router.post("/user", async (ctx) => {
-  const { firstName, lastName, password } = ctx.request.body as IUserCreate;
+router.post("/register", async (ctx) => {
+  const { firstName, lastName, password, username, email } = ctx.request.body as IUserCreate;
 
-  validateBody(userPostSchema, { firstName, lastName, password });
+  validateBody(userPostSchema, { firstName, lastName, password, username, email });
 
-  const returnUser = await ctx.state.createUser({ firstName, lastName, password });
+  const returnUser = await ctx.state.createUser({ firstName, lastName, password, username, email });
 
   ctx.body = returnUser;
   ctx.status = httpStatus.CREATED;
+});
+
+router.post("/login", async (ctx) => {
+  const { username, password } = ctx.request.body as IUserLogin;
+
+  validateBody(userLoginSchema, { username, password });
+
+  const jwt = await ctx.state.login({ password, username });
+
+  ctx.body = { token: jwt };
+  ctx.status = httpStatus.OK;
 });
 
 export default router;
