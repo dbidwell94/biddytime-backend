@@ -18,6 +18,24 @@ export class ParameterError extends ServerError {
   }
 }
 
+export class ConstraintError extends ServerError {
+  readonly status: number;
+  constructor(message: string) {
+    const match = /^key \((.*)\)=\((.*)\) already exists\.$/gim.exec(message);
+
+    const details: Record<string, any> = {};
+
+    if (match && match.length >= 3) {
+      details.key = match[1];
+      details.value = match[2];
+    }
+    super("No duplicate keys are allowed", details);
+    this.status = httpStatus.BAD_REQUEST;
+
+    Object.setPrototypeOf(this, ConstraintError.prototype);
+  }
+}
+
 /**
  * Takes an object, and removes all the keys inputted from it
  * @param obj An object to remove keys from
@@ -74,4 +92,13 @@ export function validateBody(
   } else if (!shouldThrowError) {
     return false;
   } else throw new ParameterError(missingArgs);
+}
+
+export function getConstraintError(err: Record<string, any>): ConstraintError | null {
+  Object.keys(err).forEach((key) => console.log(key));
+
+  if ("detail" in err && /^key \((.*)\)=\((.*)\) already exists\.$/gim.test(err.detail)) {
+    return new ConstraintError(err.detail);
+  }
+  return null;
 }

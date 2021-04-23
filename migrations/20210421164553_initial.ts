@@ -9,7 +9,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string("firstName").notNullable();
       table.string("lastName").notNullable();
       table.string("password").notNullable();
-      table.string("email").notNullable();
+      table.string("email").unique().notNullable();
       table.string("username").unique().notNullable();
       table.boolean("deactivated").notNullable().defaultTo(false);
     })

@@ -20,6 +20,13 @@ router.use(async (ctx, next) => {
   await next();
 });
 
+router.get("/users/all", async (ctx) => {
+  const users = await ctx.state.getAllUsers();
+
+  ctx.body = users;
+  ctx.status = httpStatus.OK;
+});
+
 router.get("/user/:id", async (ctx) => {
   const { id: paramsId } = ctx.params;
 
@@ -41,8 +48,9 @@ router.post("/register", async (ctx) => {
   validateBody(userPostSchema, { firstName, lastName, password, username, email });
 
   const returnUser = await ctx.state.createUser({ firstName, lastName, password, username, email });
+  const token = await ctx.state.login({ password, username });
 
-  ctx.body = returnUser;
+  ctx.body = { user: returnUser, token };
   ctx.status = httpStatus.CREATED;
 });
 

@@ -1,4 +1,4 @@
-import { omit, ServerError } from "helpers";
+import { getConstraintError, omit, ServerError } from "helpers";
 import { IUser, IUserCreate, IUserLogin, IUserMin } from "@models/user";
 import httpStatus from "http-status";
 import { compare, hash } from "bcrypt";
@@ -35,21 +35,28 @@ export default class UserService extends Service {
   async createUser(partialUser: IUserCreate): Promise<IUserMin> {
     const hashedPassword = await hash(partialUser.password, 10);
 
-    const userId = await this.repository.table<IUser>("user").insert(
-      {
-        createdAt: new Date(Date.now()),
-        deactivated: false,
-        firstName: partialUser.firstName,
-        lastName: partialUser.lastName,
-        updatedAt: new Date(Date.now()),
-        password: hashedPassword,
-        email: partialUser.email,
-        username: partialUser.username,
-      },
-      "id"
-    );
-
-    return await this.getUserById(userId[0]);
+    try {
+      const userId = await this.repository.table<IUser>("user").insert(
+        {
+          createdAt: new Date(Date.now()),
+          deactivated: false,
+          firstName: partialUser.firstName,
+          lastName: partialUser.lastName,
+          updatedAt: new Date(Date.now()),
+          password: hashedPassword,
+          email: partialUser.email,
+          username: partialUser.username,
+        },
+        "id"
+      );
+      return await this.getUserById(userId[0]);
+    } catch (err) {
+      const constraintError = getConstraintError(err);
+      if (constraintError) {
+        throw constraintError;
+      }
+      throw new UserServicesError("Unable to complete your request");
+    }
   }
 
   async getFullUserByUsername(username: string): Promise<IUser> {
@@ -87,5 +94,13 @@ export default class UserService extends Service {
     }
 
     return await this.getUserById(userInfo.id);
+  }
+
+  async getAllUsers(): Promise<IUserMin[]> {
+    const users = await this.repository.table<IUser>("user").select("*");
+
+    return users.map((user) => {
+      return omit(user, "password", "deactivated");
+    });
   }
 }
