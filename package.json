@@ -18,7 +18,8 @@
     "up:prod": "yarn build && docker-compose up --build",
     "down": "docker-compose -f ./docker-compose-dev.yaml down --remove-orphans",
     "prod:start": "knex migrate:up && node ./index.js",
-    "postinstall": "if [ \"$NODE_ENV\" != production ]; then husky install; fi"
+    "postinstall": "if [ \"$NODE_ENV\" != production ]; then husky install; fi",
+    "ci": "rm -rf node_modules && yarn install --frozen-lockfile"
   },
   "prettier": {
     "arrowParens": "always",
