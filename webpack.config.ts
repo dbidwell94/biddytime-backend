@@ -13,7 +13,7 @@ const migrationFiles = glob.sync("./migrations/*.ts").reduce((acc, p) => {
 
 const migrationFileNames = Object.keys(migrationFiles);
 
-export default function config(env: { WEBPACK_BUNDLE: boolean; WEBPACK_BUILD: boolean }, args: any): Configuration {
+export default function config(): Configuration {
   return {
     mode: process.env.NODE_ENV === "development" ? "development" : "production",
     entry: {

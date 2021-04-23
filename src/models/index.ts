@@ -5,4 +5,4 @@ export interface IModelSchema {
   optional?: boolean;
 }
 
-export type Schema<T extends Object> = Record<keyof T, IModelSchema>;
+export type Schema<T extends Record<string, any>> = Record<keyof T, IModelSchema>;

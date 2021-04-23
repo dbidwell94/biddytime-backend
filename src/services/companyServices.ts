@@ -1,5 +1,4 @@
 import { ICompany, ICompanyCreate, ICompanyFull } from "@models/company";
-import { IUser } from "@models/user";
 import { ServerError } from "helpers";
 import httpStatus from "http-status";
 import Service from ".";

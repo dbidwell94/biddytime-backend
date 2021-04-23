@@ -2,8 +2,8 @@ import httpStatus from "http-status";
 import { IModelSchema, IPropertyType, Schema } from "./models";
 
 export class ServerError extends Error {
-  details?: any;
-  constructor(message?: string, details?: any) {
+  details?: Record<string, any> | string;
+  constructor(message?: string, details?: Record<string, any> | string) {
     super(message);
     this.details = details;
     Object.setPrototypeOf(this, ServerError.prototype);
@@ -12,7 +12,7 @@ export class ServerError extends Error {
 
 export class ParameterError extends ServerError {
   readonly status;
-  constructor(details: Record<string, Object>) {
+  constructor(details: Record<string, Record<string, any>>) {
     super("Your request parameters are invalid", details);
     this.status = httpStatus.BAD_REQUEST;
   }
@@ -24,7 +24,10 @@ export class ParameterError extends ServerError {
  * @param keys A list of strings that are keys to obj to remove
  * @returns obj, but all the keys inputted are removed
  */
-export function omit<T extends Object, K extends Extract<keyof T, string>>(obj: T, ...keys: K[]): Omit<T, K> {
+export function omit<T extends Record<string, any>, K extends Extract<keyof T, string>>(
+  obj: T,
+  ...keys: K[]
+): Omit<T, K> {
   keys.forEach((key) => {
     (obj[key] as any) = undefined;
   });
@@ -32,7 +35,7 @@ export function omit<T extends Object, K extends Extract<keyof T, string>>(obj: 
   return obj;
 }
 
-export function parseId(id: any, errorToThrow: new (message: string) => Error = ServerError): number {
+export function parseId(id: unknown, errorToThrow: new (message: string) => Error = ServerError): number {
   const toReturn = Number(id);
   if (Number.isNaN(toReturn) || toReturn === 0) {
     throw new errorToThrow("id parameter is invalid");
@@ -43,7 +46,7 @@ export function parseId(id: any, errorToThrow: new (message: string) => Error = 
 export function validateBody(
   schema: Schema<Record<string, IModelSchema>>,
   args: Record<string, any>,
-  shouldThrowError: boolean = true
+  shouldThrowError = true
 ): boolean {
   function validateType(argument: any, type: IPropertyType): boolean {
     if (typeof argument !== type) {
@@ -52,7 +55,7 @@ export function validateBody(
     return true;
   }
 
-  const missingArgs: Record<string, Object> = {};
+  const missingArgs: Record<string, Record<string, any>> = {};
 
   Object.keys(schema).forEach((schemaKey) => {
     if (!schema[schemaKey].optional) {

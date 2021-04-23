@@ -10,7 +10,7 @@
     "url": "https://biddydev.com"
   },
   "scripts": {
-    "format": "prettier . --write && git add .",
+    "format": "eslint . --fix && prettier . --write && git add .",
     "build": "webpack",
     "dev": "knex migrate:up && webpack --mode=development --watch",
     "up": "sudo docker-compose -f ./docker-compose-dev.yaml up --build",
@@ -25,7 +25,8 @@
     "bracketSpacing": true,
     "printWidth": 120,
     "quoteProps": "consistent",
-    "singleQuote": false
+    "singleQuote": false,
+    "tabWidth": 2
   },
   "dependencies": {
     "@koa/router": "^10.0.0",
@@ -55,6 +56,12 @@
     "@types/koa-logger": "^3.1.1",
     "@types/koa__router": "^8.0.4",
     "@types/webpack-node-externals": "^2.5.1",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.24.0",
+    "eslint-plugin-json": "^2.1.2",
+    "eslint-plugin-markdown": "^2.0.1",
+    "eslint-plugin-prettier": "^3.4.0",
     "glob": "^7.1.6",
     "husky": "^6.0.0",
     "nodemon": "^2.0.7",

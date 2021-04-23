@@ -3,7 +3,7 @@ import { IUser, IUserCreate, IUserLogin, IUserMin } from "@models/user";
 import httpStatus from "http-status";
 import { compare, hash } from "bcrypt";
 import Service from ".";
-import { sign, decode, verify } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 
 export class UserServicesError extends ServerError {
   readonly status: number;
