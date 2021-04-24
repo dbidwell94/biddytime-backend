@@ -66,7 +66,6 @@ export async function up(knex: Knex): Promise<void> {
     .then(async () => {
       return await knex("user").insert([
         {
-          id: 1,
           username: "BiddytimeAdmin",
           password: hashSync(process.env.ADMIN_PASSWORD, 10),
           firstName: "BiddyTime",
@@ -80,7 +79,6 @@ export async function up(knex: Knex): Promise<void> {
     })
     .then(async () => {
       return await knex("company").insert({
-        id: 1,
         companyName: "BiddyTime",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
@@ -90,7 +88,6 @@ export async function up(knex: Knex): Promise<void> {
     .then(async () => {
       return knex("userRoles").insert([
         {
-          id: 1,
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
           userId: 1,
@@ -98,7 +95,6 @@ export async function up(knex: Knex): Promise<void> {
           role: "admin",
         },
         {
-          id: 2,
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
           userId: 1,
