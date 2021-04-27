@@ -38,8 +38,9 @@ router.post("/login", async (ctx) => {
   validateBody(userLoginSchema, { username, password });
 
   const jwt = await ctx.state.login({ password, username });
+  const user = await ctx.state.getByUsername(username);
 
-  ctx.body = { token: jwt };
+  ctx.body = { token: jwt, user };
   ctx.status = httpStatus.OK;
 });
 

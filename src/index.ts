@@ -3,11 +3,13 @@ import Koa from "koa";
 import routes from "@routes/routes";
 import logger from "koa-logger";
 import bodyParser from "koa-bodyparser";
+import cors from "koa-cors";
 
 const koa = new Koa();
 
 koa.use(logger());
 koa.use(bodyParser());
+koa.use(cors({ origin: "*" }));
 
 koa.use(async (ctx, next) => {
   try {

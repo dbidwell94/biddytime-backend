@@ -69,6 +69,12 @@ export default class UserService extends Service {
     return user;
   }
 
+  async getByUsername(username: string): Promise<IUserMin> {
+    const user = await this.getFullUserByUsername(username);
+
+    return omit(user, "password", "deactivated");
+  }
+
   /**
    * Gets a JWT for a user if username and password are a match
    * @param authInfo
